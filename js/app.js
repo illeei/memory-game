@@ -5,7 +5,7 @@ var moveCounter = parseInt(document.getElementById("moves").innerText,10);
 
 //shuffle function, restarts entire board
 function shuffle(array) {
-  var nodeList = document.querySelectorAll('li.card');
+  var nodeList = document.querySelectorAll('.card');
   var array = Array.from(nodeList);
   var currentIndex = array.length, temporaryValue, randomIndex;
 
@@ -18,6 +18,7 @@ function shuffle(array) {
     }
 
   document.getElementById("moves").innerHTML = moveCounter;
+  document.getElementById("deck").classList.toggle("shake");
 
     // Shuffle function from http://stackoverflow.com/a/2450976
     while (currentIndex !== 0) {
@@ -31,7 +32,7 @@ function shuffle(array) {
     //rewrites HTML accourding to shuffle, resets all initial classes
     for (i=0; i < array.length; i++) {
         var deck = document.getElementById('deck');
-        array[i].classList.remove("open","match");
+        array[i].classList.remove("open","match","flipInY");
         deck.appendChild(array[i]);
     }
 }
@@ -43,6 +44,7 @@ var pairs = [];
 for (const card of cards) {
     card.addEventListener("click", function(){
       this.classList.toggle("open");
+      this.classList.add("flipInY");
 
       //add clicked card to checkMatch list
       pairs.push(card);
@@ -83,7 +85,10 @@ function matchChecker() {
         pair.classList.toggle("wrong");
         setTimeout(function(){
           pair.classList.remove("open", "wrong");
-        }, 500);
+        }, 700);
+        setTimeout(function(){
+          pair.classList.remove("flipInY");
+        }, 700);
       }
     pairs = [];
   }
