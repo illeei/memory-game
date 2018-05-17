@@ -6,7 +6,7 @@ function shuffle(array) {
   var array = Array.from(nodeList);
   var currentIndex = array.length, temporaryValue, randomIndex;
   matches = 0;
-  
+
     while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex -= 1;
@@ -46,14 +46,13 @@ function matchChecker() {
       pair.classList.toggle("match");
     }
     pairs = [];
-    // matches += 1;
-    // console.log(matches);
     matchCount();
   }
   else {
     for (const pair of pairs) {
+        pair.classList.toggle("wrong");
         setTimeout(function(){
-          pair.classList.toggle("open");
+          pair.classList.remove("open", "wrong");
         }, 500);
       }
     pairs = [];
