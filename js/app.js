@@ -1,10 +1,12 @@
+var matches = 0;
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
   var nodeList = document.querySelectorAll('li.card');
   var array = Array.from(nodeList);
   var currentIndex = array.length, temporaryValue, randomIndex;
-
+  matches = 0;
+  
     while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex -= 1;
@@ -23,6 +25,7 @@ function shuffle(array) {
 }
 
 // display the card's symbol
+
 var cards = document.getElementsByClassName("card");
 var pairs = [];
 
@@ -43,6 +46,9 @@ function matchChecker() {
       pair.classList.toggle("match");
     }
     pairs = [];
+    // matches += 1;
+    // console.log(matches);
+    matchCount();
   }
   else {
     for (const pair of pairs) {
@@ -54,7 +60,14 @@ function matchChecker() {
   }
 }
 
+function matchCount() {
+  matches += 1;
+  if (matches == 1) {
+    console.log("you won the game!");
+  }
+}
 //reset game when reset button is clicked
+
 document.getElementById("reset").addEventListener("click", shuffle);
 
 
