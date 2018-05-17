@@ -92,7 +92,7 @@ h1 {
 
 .score-panel {
     text-align: left;
-    width: 345px;
+    width: 630px;
     margin-bottom: 10px;
 }
 
@@ -111,4 +111,8 @@ h1 {
 .score-panel .restart {
     float: right;
     cursor: pointer;
+}
+
+.hideStar {
+  visibility: hidden;
 }

@@ -1,12 +1,25 @@
+//universal variables
 var matches = 0;
+var moves = 0;
+var moveCounter = parseInt(document.getElementById("moves").innerText,10);
 
-// Shuffle function from http://stackoverflow.com/a/2450976
+//shuffle function, restarts entire board
 function shuffle(array) {
   var nodeList = document.querySelectorAll('li.card');
   var array = Array.from(nodeList);
   var currentIndex = array.length, temporaryValue, randomIndex;
-  matches = 0;
 
+  // resets counting values
+  matches = 0;
+  moveCounter = 0;
+  const stars = document.querySelectorAll('.stars i');
+    for (star of stars) {
+        star.classList.remove("hideStar");
+    }
+
+  document.getElementById("moves").innerHTML = moveCounter;
+
+    // Shuffle function from http://stackoverflow.com/a/2450976
     while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex -= 1;
@@ -15,8 +28,7 @@ function shuffle(array) {
         array[randomIndex] = temporaryValue;
     }
 
-// resets entire board with new cards
-
+    //rewrites HTML accourding to shuffle, resets all initial classes
     for (i=0; i < array.length; i++) {
         var deck = document.getElementById('deck');
         array[i].classList.remove("open","match");
@@ -24,23 +36,39 @@ function shuffle(array) {
     }
 }
 
-// display the card's symbol
-
+// open card on click
 var cards = document.getElementsByClassName("card");
 var pairs = [];
 
 for (const card of cards) {
     card.addEventListener("click", function(){
       this.classList.toggle("open");
+
       //add clicked card to checkMatch list
       pairs.push(card);
       if (pairs.length == 2) {
+        countMoves();
         matchChecker();
       }
   })
 }
 
+//keeps track of number of moves, changes star count
+function countMoves() {
+  moveCounter += 1;
+  document.getElementById("moves").innerHTML = moveCounter;
+  if (moveCounter >= 9 && moveCounter < 12) {
+    document.getElementById("thirdStar").classList.add("hideStar");
+  }
+  else if (moveCounter >= 12) {
+    document.getElementById("secondStar").classList.add("hideStar");
+  }
+}
+
+//checks if the two cards opened match
 function matchChecker() {
+
+  //if cards match
   if (pairs[0].innerHTML === pairs[1].innerHTML) {
     for (const pair of pairs) {
       pair.classList.toggle("match");
@@ -48,6 +76,8 @@ function matchChecker() {
     pairs = [];
     matchCount();
   }
+
+  //if cards are mismatched
   else {
     for (const pair of pairs) {
         pair.classList.toggle("wrong");
@@ -59,14 +89,15 @@ function matchChecker() {
   }
 }
 
+//keeps count of matches to determine end of game
 function matchCount() {
   matches += 1;
   if (matches == 1) {
     console.log("you won the game!");
   }
 }
-//reset game when reset button is clicked
 
+//reset game when reset button is clicked
 document.getElementById("reset").addEventListener("click", shuffle);
 
 
