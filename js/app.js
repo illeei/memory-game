@@ -1,20 +1,9 @@
-/*
- * Create a list that holds all of your cards
- */
-
-
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
-
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
-    var array = [];
-    var currentIndex = array.length, temporaryValue, randomIndex;
+  var nodeList = document.querySelectorAll('li.card');
+  var array = Array.from(nodeList);
+  var currentIndex = array.length, temporaryValue, randomIndex;
 
     while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
@@ -24,7 +13,13 @@ function shuffle(array) {
         array[randomIndex] = temporaryValue;
     }
 
-    return array;
+// resets entire board with new cards
+
+    for (i=0; i < array.length; i++) {
+        var deck = document.getElementById('deck');
+        array[i].classList.remove("open","match");
+        deck.appendChild(array[i]);
+    }
 }
 
 // display the card's symbol
@@ -53,14 +48,24 @@ function matchChecker() {
     for (const pair of pairs) {
         setTimeout(function(){
           pair.classList.toggle("open");
-        }, 750);
+        }, 500);
       }
     pairs = [];
   }
 }
 
 //reset game when reset button is clicked
-document.getElementById("reset").addEventListener("click", shuffle());
+document.getElementById("reset").addEventListener("click", shuffle);
+
+
+
+
+
+
+
+
+
+
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
