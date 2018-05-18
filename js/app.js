@@ -2,12 +2,14 @@
 var matches = 0;
 var moves = 0;
 var moveCounter = parseInt(document.getElementById("moves").innerText,10);
+var modalStars = 3;
 
 //shuffle function, restarts entire board
 function shuffle(array) {
   var nodeList = document.querySelectorAll('.card');
   var array = Array.from(nodeList);
   var currentIndex = array.length, temporaryValue, randomIndex;
+  var board = document.getElementById("deck");
 
   // resets counting values
   matches = 0;
@@ -18,7 +20,8 @@ function shuffle(array) {
     }
 
   document.getElementById("moves").innerHTML = moveCounter;
-  document.getElementById("deck").classList.toggle("shake");
+  board.classList.toggle("shake");
+  board.classList.remove("rotateOut");
 
     // Shuffle function from http://stackoverflow.com/a/2450976
     while (currentIndex !== 0) {
@@ -59,11 +62,13 @@ for (const card of cards) {
 function countMoves() {
   moveCounter += 1;
   document.getElementById("moves").innerHTML = moveCounter;
-  if (moveCounter >= 9 && moveCounter < 12) {
+  if (moveCounter >= 10 && moveCounter < 15) {
     document.getElementById("thirdStar").classList.add("hideStar");
+    modalStars = 2;
   }
-  else if (moveCounter >= 12) {
+  else if (moveCounter >= 15) {
     document.getElementById("secondStar").classList.add("hideStar");
+    modalStars = 1;
   }
 }
 
@@ -97,14 +102,43 @@ function matchChecker() {
 //keeps count of matches to determine end of game
 function matchCount() {
   matches += 1;
-  if (matches == 1) {
-    console.log("you won the game!");
+  if (matches == 8) {
+    gameEnd();
   }
+}
+
+//hide board when all cards are paired, congratulate winner and ask to play again
+function gameEnd() {
+  // var deck = document.getElementById('deck');
+  // deck.classList.add("rotateOut");
+  // document.getElementById("gameOver").style.display="block";
+  // document.getElementById("reset").style.visibility="hidden";
+  // document.getElementById("score-panel").classList.add("win");
+  // prompt(matches);
+  document.querySelector(".end-modal").classList.toggle("show-modal");
+  document.querySelector(".end-modal span").innerHTML = moveCounter;
+  addModalStars();
+}
+
+function addModalStars(){
+  for (i=0; i < modalStars; i++) {
+    var newStar = document.createElement("i");
+    document.getElementById("endStar").appendChild(newStar);
+    newStar.classList.add("fa","fa-star");
+  }
+}
+
+//starts a new game when playAgain button is pressed
+function newGame() {
+  document.getElementById("gameOver").style.display="none";
+  document.getElementById("score-panel").classList.remove("win");
+  document.getElementById("reset").style.visibility="visible";
+  shuffle();
 }
 
 //reset game when reset button is clicked
 document.getElementById("reset").addEventListener("click", shuffle);
-
+// document.getElementById("playAgain").addEventListener("click", newGame);
 
 
 
