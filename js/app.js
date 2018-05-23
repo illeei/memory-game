@@ -18,6 +18,16 @@ function shuffle(array) {
     for (star of stars) {
         star.classList.remove("hideStar");
     }
+  //adds back the listener to start timer on first click
+  document.getElementById("deck").addEventListener("click", startTimer);
+  resetTimer();
+  document.getElementById("timerLabel").innerHTML = "00:00";
+
+  //resets modal star display
+  var endStar = document.getElementById("endStar");
+  while (endStar.firstChild) {
+      endStar.removeChild(endStar.firstChild);
+  }
 
   document.getElementById("moves").innerHTML = moveCounter;
   board.classList.toggle("shake");
@@ -51,7 +61,7 @@ for (const card of cards) {
 
       //add clicked card to checkMatch list
       pairs.push(card);
-      if (pairs.length == 2) {
+      if (pairs.length === 2) {
         countMoves();
         matchChecker();
       }
@@ -62,11 +72,11 @@ for (const card of cards) {
 function countMoves() {
   moveCounter += 1;
   document.getElementById("moves").innerHTML = moveCounter;
-  if (moveCounter >= 10 && moveCounter < 15) {
+  if (moveCounter >= 10 && moveCounter < 17) {
     document.getElementById("thirdStar").classList.add("hideStar");
     modalStars = 2;
   }
-  else if (moveCounter >= 15) {
+  else if (moveCounter >= 17) {
     document.getElementById("secondStar").classList.add("hideStar");
     modalStars = 1;
   }
@@ -109,17 +119,14 @@ function matchCount() {
 
 //hide board when all cards are paired, congratulate winner and ask to play again
 function gameEnd() {
-  // var deck = document.getElementById('deck');
-  // deck.classList.add("rotateOut");
-  // document.getElementById("gameOver").style.display="block";
-  // document.getElementById("reset").style.visibility="hidden";
-  // document.getElementById("score-panel").classList.add("win");
-  // prompt(matches);
+  stopTimer();
   document.querySelector(".end-modal").classList.toggle("show-modal");
-  document.querySelector(".end-modal span").innerHTML = moveCounter;
+  document.querySelector("#endMoves").innerHTML = moveCounter;
+  document.querySelector("#endTime").innerHTML = document.getElementById("timerLabel").innerHTML;
   addModalStars();
 }
 
+//add stars to modal display at the end of the game
 function addModalStars(){
   for (i=0; i < modalStars; i++) {
     var newStar = document.createElement("i");
@@ -130,31 +137,64 @@ function addModalStars(){
 
 //starts a new game when playAgain button is pressed
 function newGame() {
-  document.getElementById("gameOver").style.display="none";
-  document.getElementById("score-panel").classList.remove("win");
-  document.getElementById("reset").style.visibility="visible";
+  document.querySelector(".end-modal").classList.toggle("show-modal");
   shuffle();
 }
 
+// closes modal window after no thanks button is clicked
+function endGame() {
+  document.querySelector(".end-modal").classList.toggle("show-modal");
+}
+
+// timer functions
+var status = 0;
+var time = 0;
+
+function startTimer() {
+  //remove listener that started the timer on first click
+  document.getElementById("deck").removeEventListener("click", arguments.callee)
+  status = 1;
+  timer();
+}
+
+function stopTimer() {
+  status = 0;
+}
+
+function resetTimer() {
+  status = 0;
+  time = 0;
+}
+
+function timer() {
+  if (status == 1) {
+    setTimeout(function(){
+      time++;
+      var min = Math.floor(time/100/60);
+      var sec = Math.floor(time/100);
+
+      if (min < 10) {
+        min = "0" + min;
+      }
+
+      if (sec >= 60) {
+        sec = sec % 60;
+      }
+
+      if (sec < 10) {
+        sec = "0" + sec;
+      }
+
+      document.getElementById("timerLabel").innerHTML = min + ":" + sec;
+      timer();
+    },10);
+  }
+}
 //reset game when reset button is clicked
 document.getElementById("reset").addEventListener("click", shuffle);
-// document.getElementById("playAgain").addEventListener("click", newGame);
-
-
-
-
-
-
-
-
-
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
+// shuffle and reset board for new game on modal view
+document.getElementById("playAgain").addEventListener("click", newGame);
+// close modal window and show all cards from previous game
+document.getElementById("endHere").addEventListener("click", endGame);
+// starts timer on first card click
+document.getElementById("deck").addEventListener("click", startTimer);

@@ -22,6 +22,7 @@ body {
 }
 
 .container {
+    max-width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -34,12 +35,10 @@ h1 {
     font-weight: 300;
 }
 
-/*
- * Styles for the deck of cards
- */
+/* Styles for deck of cards */
 
 .deck {
-    width: 660px;
+    min-width: 350px;
     min-height: 680px;
     background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
     padding: 32px;
@@ -49,7 +48,7 @@ h1 {
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    margin: 0 0 3em;
+    margin: 1em 4em 4em 4em;;
 }
 
 .deck .card {
@@ -64,6 +63,7 @@ h1 {
     justify-content: center;
     align-items: center;
     box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
+    margin: 15px 2px 15px 2px;
 }
 
 .deck .card.open {
@@ -73,10 +73,6 @@ h1 {
     font-size: 33px;
     pointer-events: none;
 }
-/*
-.deck .card.show {
-    font-size: 33px;
-} */
 
 .deck .card.match {
     cursor: default;
@@ -87,20 +83,14 @@ h1 {
 .deck .card.wrong {
     background: #EF476F;
 }
-/*
- * Styles for the Score Panel
- */
+
+/* score panel (moves counter, stars, reset, timer) */
 
 .score-panel {
-    text-align: left;
-    width: 630px;
-    margin-bottom: 10px;
-}
-
-.score-panel .stars {
-    padding: 0;
-    display: inline-block;
-    text-align: center;
+    display: flex;
+    width: 80%;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
 }
 
 .score-panel .stars li {
@@ -108,26 +98,17 @@ h1 {
     display: inline-block;
 }
 
-.score-panel .restart {
-    float: right;
+.score-panel #reset {
+    /* float: right; */
     cursor: pointer;
+    /* margin-left: 5em; */
 }
 
 .hideStar {
     visibility: hidden;
 }
 
-/* #gameOver {
-  display: none;
-  font-size: 2em;
-  text-align: center;
-} */
-/*
-.win {
-  font-size: 2em;
-  text-align: center;
-} */
-.buttons {
+.modalButtons {
   display: flex;
   justify-content: space-evenly;
 }
@@ -171,4 +152,14 @@ button {
     transform: scale(1.0);
     transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
     z-index: 2;
+}
+
+@media (min-width: 700px) {
+    .deck {
+      max-width: 660px;
+    }
+
+    /* .score-panel {
+        width: 630px;
+    } */
 }
